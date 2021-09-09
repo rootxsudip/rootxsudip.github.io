@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>untagged on InfoSec Writeups</title>
+    <link>http://0xsudip.github.io/tags/untagged/</link>
+    <description>Recent content in untagged on InfoSec Writeups</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 09 Sep 2021 15:19:36 +0530</lastBuildDate><atom:link href="http://0xsudip.github.io/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mypost</title>
+      <link>http://0xsudip.github.io/posts/mypost/</link>
+      <pubDate>Thu, 09 Sep 2021 15:19:36 +0530</pubDate>
+      
+      <guid>http://0xsudip.github.io/posts/mypost/</guid>
+      <description>This my first post</description>
+    </item>
+    
+  </channel>
+</rss>
