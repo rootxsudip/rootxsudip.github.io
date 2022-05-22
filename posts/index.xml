@@ -11,10 +11,10 @@
         
         <item>
             <title>Delete any account using IDOR</title>
-            <link>http://0xsudip.github.io/posts/delete-any-account-using-idor/</link>
+            <link>http://0xsudip.github.io/posts/how-was-i-able-to-delete-any-account-of-an-organization-using-idor/</link>
             <pubDate>Fri, 10 Sep 2021 09:37:47 +0530</pubDate>
             
-            <guid>http://0xsudip.github.io/posts/delete-any-account-using-idor/</guid>
+            <guid>http://0xsudip.github.io/posts/how-was-i-able-to-delete-any-account-of-an-organization-using-idor/</guid>
             <description>Hello, amazing hackers my name is Sudip Roy and i am an InfoSec student and part-time Bug Hunter.This is my first writeup about a critical vulnerability which i found on a website(Vdp). Hope you guys will like it and learn something new from it.
 Lets get started, The website provides cloud-based consumer identity and access management (CIAM) solution. For testing purposes i signup using my account, select developer pro(extra features), created a app and looked for every features of the website, 1 hour later i decided to play with the delete account feature from the settings page.</description>
             <content type="html"><![CDATA[<p>Hello, amazing hackers my name is Sudip Roy and i am an InfoSec student and part-time Bug Hunter.This is my first writeup about a critical vulnerability which i found on a website(Vdp). Hope you guys will like it and learn something new from it.</p>
