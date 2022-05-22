@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "/home/sudip/Desktop/blog/0xsudip",
+	"sourceRoot": "/home/sudip/Desktop/all/blog/0xsudip",
 	"sources": [
 		"themes/hello-friend-ng/assets/scss/main.scss",
 		"themes/hello-friend-ng/assets/scss/_normalize.scss",

