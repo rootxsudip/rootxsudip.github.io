@@ -6,8 +6,58 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Fri, 10 Sep 2021 09:37:47 +0530</lastBuildDate>
+        <lastBuildDate>Sun, 22 May 2022 09:04:21 +0530</lastBuildDate>
         <atom:link href="http://0xsudip.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Hacking TryHackMe for Fun and Bounties 👀 Part 1</title>
+            <link>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</link>
+            <pubDate>Sun, 22 May 2022 09:04:21 +0530</pubDate>
+            
+            <guid>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</guid>
+            <description>Hello guys, during my hunting i find two vulnerabilities in THM, today i will talk about the first vuln which is S3 Bucket misconfiguration.
+If you don&amp;rsquo;t know what is s3 bucket and how it leads to vulns check the references.
+1. S3 Bucket Misconfiguation Leads to deletion of any images(profile,room images,banner etc..) When, uploading my profile pic, i saw it was uploaded to a s3 bucket.
+My first thought was can i perform read, upload and delete operation in the S3 bucket?</description>
+            <content type="html"><![CDATA[<p>Hello guys, during my hunting i find two vulnerabilities in THM, today i will talk about the first vuln which is S3 Bucket misconfiguration.<br>
+If you don&rsquo;t know what is s3 bucket and how it leads to vulns check the references.</p>
+<h3 id="1-s3-bucket-misconfiguation-leads-to-deletion-of-any-imagesprofileroom-imagesbanner-etc">1. S3 Bucket Misconfiguation Leads to deletion of any images(profile,room images,banner etc..)</h3>
+<p>When, uploading my profile pic, i saw it was uploaded to a s3 bucket.<br>
+My first thought was can i perform read, upload and delete operation in the S3 bucket?<br>
+After that i tried 3 operations in the bucket: READ, UPLOAD, DELETE<br>
+<strong>AWS S3 Commands:</strong></p>
+<ul>
+<li>❌ READ Contents: aws s3 ls s3://bucket-name/ &ndash;no-sign-request</li>
+<li>❌ Upload Content: aws s3 cp poc.txt s3://bucket-name/poc.txt &ndash;no-sign-request</li>
+<li>✅ Delete Content: aws rm s3://bucketname/user-avatars/my-pic.jpeg &ndash;no-sign-request<br>
+Only delete operation was successfull, this proved that i can delete any pics from the bucket.</li>
+</ul>
+<p><strong>Impact:</strong><br>
+An attacker can delete any pic in TryHackMe which includes profile pic of anyusers,room icon, room banner etc..</p>
+<p><strong>How I made the POC:</strong></p>
+<ul>
+<li>Upload a pic in my 2nd account.</li>
+<li>Visit my 2nd account&rsquo;s public profile from the 1st account.</li>
+<li>Using inspect, i copied the profile pic of that 2nd account.</li>
+<li>Deleted the pic using aws command -&gt; aws s3 rm s3://tryhackme-images/user-avatars/2ndpic.png &ndash;no-sign-request</li>
+</ul>
+<p><strong>How to find S3 Buckets?</strong>:</p>
+<ul>
+<li>Check website&rsquo;s source code(JS,HTML)</li>
+<li>Check CSP headers</li>
+<li>Google and Github dorking</li>
+<li>Use Tools like <a href="https://github.com/sa7mon/S3Scanner">https://github.com/sa7mon/S3Scanner</a> etc..</li>
+</ul>
+<p><strong>Some References:</strong></p>
+<ul>
+<li><a href="https://blog.lightspin.io/how-to-access-aws-s3-buckets">https://blog.lightspin.io/how-to-access-aws-s3-buckets</a></li>
+<li><a href="https://labs.detectify.com/2017/07/13/a-deep-dive-into-aws-s3-access-controls-taking-full-control-over-your-assets/?utm_source=blog&amp;utm_campaign=s3_buckets">https://labs.detectify.com/2017/07/13/a-deep-dive-into-aws-s3-access-controls-taking-full-control-over-your-assets/?utm_source=blog&amp;utm_campaign=s3_buckets</a></li>
+<li><a href="https://medium.com/@janijay007/s3-bucket-misconfiguration-from-basics-to-pawn-6893776d1007">https://medium.com/@janijay007/s3-bucket-misconfiguration-from-basics-to-pawn-6893776d1007</a></li>
+</ul>
+<p>When I reported the misconfiguation, they fixed it quickly in one day and rewarded me $$$</p>
+<p>Thanks for reading and wait for the part 2 :)</p>
+]]></content>
+        </item>
         
         <item>
             <title>How was i able to delete any account of an organization using IDOR</title>
