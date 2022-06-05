@@ -2,22 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
+    <loc>http://0xsudip.github.io/tags/idor/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
+    <loc>http://0xsudip.github.io/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
+    <loc>http://0xsudip.github.io/tags/parameter-pollution/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
+    <loc>http://0xsudip.github.io/posts/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
+    <loc>http://0xsudip.github.io/tags/</loc>
+    <lastmod>2022-06-05T18:53:44+05:30</lastmod>
+  </url><url>
     <loc>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</loc>
     <lastmod>2022-05-22T09:04:21+05:30</lastmod>
   </url><url>
-    <loc>http://0xsudip.github.io/tags/idor/</loc>
-    <lastmod>2022-05-22T09:04:21+05:30</lastmod>
-  </url><url>
-    <loc>http://0xsudip.github.io/</loc>
-    <lastmod>2022-05-22T09:04:21+05:30</lastmod>
-  </url><url>
     <loc>http://0xsudip.github.io/tags/misconfiguration/</loc>
-    <lastmod>2022-05-22T09:04:21+05:30</lastmod>
-  </url><url>
-    <loc>http://0xsudip.github.io/posts/</loc>
-    <lastmod>2022-05-22T09:04:21+05:30</lastmod>
-  </url><url>
-    <loc>http://0xsudip.github.io/tags/</loc>
     <lastmod>2022-05-22T09:04:21+05:30</lastmod>
   </url><url>
     <loc>http://0xsudip.github.io/about/</loc>

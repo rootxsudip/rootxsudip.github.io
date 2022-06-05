@@ -6,8 +6,25 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sun, 22 May 2022 09:04:21 +0530</lastBuildDate>
+        <lastBuildDate>Sun, 05 Jun 2022 18:53:44 +0530</lastBuildDate>
         <atom:link href="http://0xsudip.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Hacking TryHackMe for Fun and Bounties 👀 Part 2</title>
+            <link>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</link>
+            <pubDate>Sun, 05 Jun 2022 18:53:44 +0530</pubDate>
+            
+            <guid>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</guid>
+            <description>Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
+I uploaded the POC video to Youtube.
+Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403.</description>
+            <content type="html"><![CDATA[<p>Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.<br>
+I uploaded the POC video to Youtube.<br>
+<strong>Shortest Bug Explanation:</strong> Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403. In next attempt i added a second parameter(Parameter Pollution) with the 2nd room name, the check bypassed and the other room got delete/edited.<br>
+<strong>POC video:</strong><br>
+<a href="https://youtu.be/eNfgWbU1N3M"><img src="https://img.youtube.com/vi/eNfgWbU1N3M/hqdefault.jpg" alt="Hacking THM Part 2"></a></p>
+]]></content>
+        </item>
         
         <item>
             <title>Hacking TryHackMe for Fun and Bounties 👀 Part 1</title>
