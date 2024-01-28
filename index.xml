@@ -1,66 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>InfoSec Writeups</title>
-    <link>http://0xsudip.github.io/</link>
-    <description>Recent content on InfoSec Writeups</description>
+    <title>An Avg InfoSec Blog</title>
+    <link>https://rootxsudip.github.io/</link>
+    <description>Recent content on An Avg InfoSec Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sun, 05 Jun 2022 18:53:44 +0530</lastBuildDate><atom:link href="http://0xsudip.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hacking TryHackMe for Fun and Bounties 👀 Part 2</title>
-      <link>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</link>
-      <pubDate>Sun, 05 Jun 2022 18:53:44 +0530</pubDate>
-      
-      <guid>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</guid>
-      <description>Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
-I uploaded the POC video to Youtube.
-Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403.</description>
-    </item>
-    
-    <item>
-      <title>Hacking TryHackMe for Fun and Bounties 👀 Part 1</title>
-      <link>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</link>
-      <pubDate>Sun, 22 May 2022 09:04:21 +0530</pubDate>
-      
-      <guid>http://0xsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</guid>
-      <description>Hello guys, during my hunting i find two vulnerabilities in THM, today i will talk about the first vuln which is S3 Bucket misconfiguration.
-If you don&amp;rsquo;t know what is s3 bucket and how it leads to vulns check the references.
-1. S3 Bucket Misconfiguation Leads to deletion of any images(profile,room images,banner etc..) When, uploading my profile pic, i saw it was uploaded to a s3 bucket.
-My first thought was can i perform read, upload and delete operation in the S3 bucket?</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>http://0xsudip.github.io/about/</link>
-      <pubDate>Sun, 22 May 2022 08:11:37 +0530</pubDate>
-      
-      <guid>http://0xsudip.github.io/about/</guid>
-      <description>  👋 Hi, I’m Sudip
-  👀 Wannabe Hacker
-  📫 How to reach me -&amp;gt; twitter: 0xsudip
-  </description>
-    </item>
-    
-    <item>
-      <title>How was i able to delete any account of an organization using IDOR</title>
-      <link>http://0xsudip.github.io/posts/how-was-i-able-to-delete-any-account-of-an-organization-using-idor/</link>
-      <pubDate>Fri, 10 Sep 2021 09:37:47 +0530</pubDate>
-      
-      <guid>http://0xsudip.github.io/posts/how-was-i-able-to-delete-any-account-of-an-organization-using-idor/</guid>
-      <description>Hello, amazing hackers my name is Sudip Roy and i am an InfoSec student and part-time Bug Hunter.This is my first writeup about a critical vulnerability which i found on a website(Vdp). Hope you guys will like it and learn something new from it.
-Lets get started, The website provides cloud-based consumer identity and access management (CIAM) solution. For testing purposes i signup using my account, select developer pro(extra features), created a app and looked for every features of the website, 1 hour later i decided to play with the delete account feature from the settings page.</description>
-    </item>
-    
-    <item>
-      <title>Mypost</title>
-      <link>http://0xsudip.github.io/posts/mypost/</link>
-      <pubDate>Thu, 09 Sep 2021 15:19:36 +0530</pubDate>
-      
-      <guid>http://0xsudip.github.io/posts/mypost/</guid>
-      <description>This my first post</description>
-    </item>
-    
+    <atom:link href="https://rootxsudip.github.io/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
