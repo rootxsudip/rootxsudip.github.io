@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>IDOR on An Avg InfoSec Blog</title>
-    <link>https://rootxsudip.github.io/tags/idor/</link>
-    <description>Recent content in IDOR on An Avg InfoSec Blog</description>
+    <title>bug bounty on An Avg InfoSec Blog</title>
+    <link>https://rootxsudip.github.io/tags/bug-bounty/</link>
+    <description>Recent content in bug bounty on An Avg InfoSec Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sun, 05 Jun 2022 18:53:44 +0530</lastBuildDate>
-    <atom:link href="https://rootxsudip.github.io/tags/idor/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rootxsudip.github.io/tags/bug-bounty/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hacking TryHackMe for Fun and Bounties 👀 Part 2</title>
       <link>https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</link>
       <pubDate>Sun, 05 Jun 2022 18:53:44 +0530</pubDate>
       <guid>https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/</guid>
       <description>Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.&#xA;I uploaded the POC video to Youtube.&#xA;Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403.</description>
+    </item>
+    <item>
+      <title>Hacking TryHackMe for Fun and Bounties 👀 Part 1</title>
+      <link>https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</link>
+      <pubDate>Sun, 22 May 2022 09:04:21 +0530</pubDate>
+      <guid>https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/</guid>
+      <description>Hello guys, during my hunting i find two vulnerabilities in THM, today i will talk about the first vuln which is S3 Bucket misconfiguration.&#xA;If you don’t know what is s3 bucket and how it leads to vulns check the references.&#xA;1. S3 Bucket Misconfiguation Leads to deletion of any images(profile,room images,banner etc..) When, uploading my profile pic, i saw it was uploaded to a s3 bucket.&#xA;My first thought was can i perform read, upload and delete operation in the S3 bucket?</description>
     </item>
     <item>
       <title>How Was I Able to Delete Any Account of an Organization Using Idor</title>
