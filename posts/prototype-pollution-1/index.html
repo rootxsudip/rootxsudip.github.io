@@ -5,18 +5,19 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="">
-<meta name="description" content="Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
-I uploaded the POC video to Youtube.
-Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403." />
-<meta name="keywords" content="homepage, blog, IDOR, bug bounty" />
+<meta name="description" content="Before diving into prototype pollution we need to learn about javascript objects and prototype basics.
+What is a javascript object? An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.
+Example code:
+//Object let car = { name: &amp;#34;audi&amp;#34;, model: &amp;#34;r8&amp;#34;, engine: &amp;#34;V10&amp;#34; } //Accessing object properties console.log(car.name) console.log(car.model) Constructor: Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods." />
+<meta name="keywords" content="homepage, blog, Web Security, bug bounty, ctf" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="" />
-<link rel="canonical" href="https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/" />
+<link rel="canonical" href="https://rootxsudip.github.io/posts/prototype-pollution-1/" />
 
 
     <title>
         
-            Hacking TryHackMe for Fun and Bounties 👀 Part 2 :: An Avg InfoSec Blog  — A simple theme for Hugo
+            Demystifying Prototype Pollution for Beginners :: An Avg InfoSec Blog  — A simple theme for Hugo
         
     </title>
 
@@ -37,29 +38,32 @@ Shortest Bug Explanation: Any room is edited through a parameter with a room nam
     <meta name="msapplication-TileColor" content="">
 
 
-<meta itemprop="name" content="Hacking TryHackMe for Fun and Bounties 👀 Part 2">
-<meta itemprop="description" content="Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
-I uploaded the POC video to Youtube.
-Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403."><meta itemprop="datePublished" content="2022-06-05T18:53:44+05:30" />
-<meta itemprop="dateModified" content="2022-06-05T18:53:44+05:30" />
-<meta itemprop="wordCount" content="110"><meta itemprop="image" content="https://rootxsudip.github.io/" />
-<meta itemprop="keywords" content="IDOR,bug bounty," />
+<meta itemprop="name" content="Demystifying Prototype Pollution for Beginners">
+<meta itemprop="description" content="Before diving into prototype pollution we need to learn about javascript objects and prototype basics.
+What is a javascript object? An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.
+Example code:
+//Object let car = { name: &#34;audi&#34;, model: &#34;r8&#34;, engine: &#34;V10&#34; } //Accessing object properties console.log(car.name) console.log(car.model) Constructor: Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods."><meta itemprop="datePublished" content="2024-02-29T10:20:22+05:30" />
+<meta itemprop="dateModified" content="2024-02-29T10:20:22+05:30" />
+<meta itemprop="wordCount" content="837"><meta itemprop="image" content="https://rootxsudip.github.io/" />
+<meta itemprop="keywords" content="Web Security,bug bounty,ctf," />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://rootxsudip.github.io/" /><meta name="twitter:title" content="Hacking TryHackMe for Fun and Bounties 👀 Part 2"/>
-<meta name="twitter:description" content="Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
-I uploaded the POC video to Youtube.
-Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403."/>
+<meta name="twitter:image" content="https://rootxsudip.github.io/" /><meta name="twitter:title" content="Demystifying Prototype Pollution for Beginners"/>
+<meta name="twitter:description" content="Before diving into prototype pollution we need to learn about javascript objects and prototype basics.
+What is a javascript object? An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.
+Example code:
+//Object let car = { name: &#34;audi&#34;, model: &#34;r8&#34;, engine: &#34;V10&#34; } //Accessing object properties console.log(car.name) console.log(car.model) Constructor: Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods."/>
 
 
 
-    <meta property="og:title" content="Hacking TryHackMe for Fun and Bounties 👀 Part 2" />
-<meta property="og:description" content="Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.
-I uploaded the POC video to Youtube.
-Shortest Bug Explanation: Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403." />
+    <meta property="og:title" content="Demystifying Prototype Pollution for Beginners" />
+<meta property="og:description" content="Before diving into prototype pollution we need to learn about javascript objects and prototype basics.
+What is a javascript object? An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.
+Example code:
+//Object let car = { name: &#34;audi&#34;, model: &#34;r8&#34;, engine: &#34;V10&#34; } //Accessing object properties console.log(car.name) console.log(car.model) Constructor: Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/" /><meta property="og:image" content="https://rootxsudip.github.io/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-06-05T18:53:44+05:30" />
-<meta property="article:modified_time" content="2022-06-05T18:53:44+05:30" />
+<meta property="og:url" content="https://rootxsudip.github.io/posts/prototype-pollution-1/" /><meta property="og:image" content="https://rootxsudip.github.io/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-02-29T10:20:22+05:30" />
+<meta property="article:modified_time" content="2024-02-29T10:20:22+05:30" />
 
 
 
@@ -67,7 +71,7 @@ Shortest Bug Explanation: Any room is edited through a parameter with a room nam
 
 
 
-    <meta property="article:published_time" content="2022-06-05 18:53:44 &#43;0530 IST" />
+    <meta property="article:published_time" content="2024-02-29 10:20:22 &#43;0530 IST" />
 
 
 
@@ -141,7 +145,7 @@ Shortest Bug Explanation: Any room is edited through a parameter with a room nam
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
-        One minute
+        4 minutes
 
         
       </p>
@@ -149,7 +153,7 @@ Shortest Bug Explanation: Any room is edited through a parameter with a room nam
 
     <article>
       <h1 class="post-title">
-        <a href="https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/">Hacking TryHackMe for Fun and Bounties 👀 Part 2</a>
+        <a href="https://rootxsudip.github.io/posts/prototype-pollution-1/">Demystifying Prototype Pollution for Beginners</a>
       </h1>
 
       
@@ -159,11 +163,104 @@ Shortest Bug Explanation: Any room is edited through a parameter with a room nam
       
 
       <div class="post-content">
-        <p>Hello guys, here is the 2nd part of blog. This is the most critical bug i have ever found in TryHackMe, using this bug an attacker can edit and delete any rooms of THM.<br>
-I uploaded the POC video to Youtube.<br>
-<strong>Shortest Bug Explanation:</strong> Any room is edited through a parameter with a room name, i created two room with two different accounts. While deleting/editing the 1st room name i intercepted the request and change the 1st room to 2nd room name, it throwed 403. In next attempt i added a second parameter(Parameter Pollution) with the 2nd room name, the check bypassed and the other room got delete/edited.<br>
-<strong>POC video:</strong><br>
-<a href="https://youtu.be/eNfgWbU1N3M"><img src="https://img.youtube.com/vi/eNfgWbU1N3M/hqdefault.jpg" alt="Hacking THM Part 2"></a></p>
+        <p>Before diving into prototype pollution we need to learn about javascript objects and prototype basics.</p>
+<h3 id="what-is-a-javascript-object">What is a javascript object?</h3>
+<p>An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.</p>
+<p><strong>Example code:</strong></p>
+<pre tabindex="0"><code>//Object
+let car = {
+  name: &#34;audi&#34;,
+  model: &#34;r8&#34;,
+  engine: &#34;V10&#34;
+}
+
+//Accessing object properties
+console.log(car.name)
+console.log(car.model)
+</code></pre><h3 id="constructor">Constructor:</h3>
+<p>Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods.<br>
+In the below code, we create two instances of car object and the car object act as blueprint.</p>
+<h3 id="prototype">Prototype:</h3>
+<p>In JavaScript, the prototype is a mechanism that allows objects to inherit properties and methods from other objects. Every JavaScript object has a prototype, which is essentially a reference to another object from which it inherits properties. This inheritance mechanism is fundamental to JavaScript&rsquo;s object-oriented programming paradigm.</p>
+<ul>
+<li>In simple language, when we create a object or function the js engine attaches a another object to it which have default properties,methods like toString() etc. That another object which is attach to our object is called prototype or <strong>proto</strong></li>
+</ul>
+<p><strong>Example Code:</strong></p>
+<pre tabindex="0"><code>function Car(name,model,engine){
+  this.name = name,
+  this.model = model,
+  this.engine = engine;
+}
+
+let car1 = new Car(&#34;Lamborghini&#34;,&#34;Revuelto&#34;,&#34;V12&#34;)
+let car2 = new Car(&#34;Nissan&#34;,&#34;Z&#34;,&#34;VR30DDTT&#34;)
+
+//Accessing object
+console.log(car1)
+console.log(car2)
+</code></pre><h4 id="few-key-reasons-why-prototypes-are-used-in-javascript-objects">Few key reasons why prototypes are used in javascript objects</h4>
+<ol>
+<li>Efficiet Memory Usage: When we create multiple instances of one object, each instance gets it&rsquo;s own memory. Prototype allows to define properties and methods once on the prototype object, which is shared among all the instances which reduces memory usage.</li>
+<li>Inheritance: It facilliates inheritance in javascript. When a property or method is accessed on an object, if that property or method does not exist on the object itself, it tries to access the property from prototype chain upto global prototype</li>
+<li>Dynamic Modification:  Prototypes can be modified dynamically at runtime. This means that we can add or modify properties and methods on the prototype of an object, and these changes will be reflected in all instances of that object.</li>
+<li>Performance Optimization: Accessing properties and methods through prototypes can sometimes be faster than accessing them directly on the object itself.</li>
+</ol>
+<p><strong>Example Code:</strong></p>
+<pre tabindex="0"><code>function Car(name,model,engine){
+  this.name = name,
+  this.model = model,
+  this.engine = engine;
+}
+
+//Adding a property in Car prototype
+Car.prototype.category = function(){
+  console.log(&#34;Sports&#34;)
+}
+
+let car1 = new Car(&#34;Lamborghini&#34;,&#34;Revuelto&#34;,&#34;V12&#34;)
+let car2 = new Car(&#34;Nissan&#34;,&#34;Z&#34;,&#34;VR30DDTT&#34;)
+
+//Accessing object properties
+console.log(car1.category())
+console.log(car2.category())
+</code></pre><p>Here, car1 and car2 can access the method from their prototype.</p>
+<h4 id="prototype-chain">Prototype Chain:</h4>
+<p>When a property or method is accessed on an object, JavaScript first looks for it directly on the object itself. If it&rsquo;s not found, JavaScript then follows the prototype chain, traversing through the linked prototype objects until it finds the property or method, or until it reaches the end of the chain (which is typically the Object.prototype).</p>
+<p>Here&rsquo;s a breakdown of how the prototype chain works:</p>
+<ol>
+<li>Object Creation: When an object is created using either object literals, constructor functions, or class syntax, it automatically inherits from a prototype.</li>
+<li>Prototype Linkage: Every object (except for the root Object.prototype) has an internal [[Prototype]] property that references another object. This creates a chain of prototypes.</li>
+<li>Property Lookup: When accessing a property or method on an object, JavaScript first checks if the property exists directly on the object. If not found, it follows the prototype chain, looking for the property or method in each linked prototype object.</li>
+<li>Inheritance: Properties and methods defined in an object&rsquo;s prototype are inherited by all instances of that object. This promotes code reuse and allows for the implementation of inheritance patterns in JavaScript.</li>
+<li>Modifying Prototypes Dynamically: Prototypes can be modified dynamically at runtime, allowing for changes to be reflected in all objects that inherit from them. This provides a powerful way to extend and customize the behavior of objects.</li>
+</ol>
+<h4 id="prototype-pollution">Prototype Pollution:</h4>
+<p>Prototype pollution is a vulnerability in JavaScript where an attacker can manipulate the prototype of objects to inject or modify properties and methods, potentially leading to unexpected behavior or security issues. This can occur when the application fails to properly validate and sanitize user input, allowing attackers to craft malicious payloads.
+Example:</p>
+<pre tabindex="0"><code>// Original object
+let data = {
+  name: &#34;John&#34;,
+  age: 30
+};
+
+// Malicious payload
+let maliciousPayload = {
+  __proto__: {
+    isAdmin: true
+  }
+};
+
+// Merge the original object with the malicious payload
+Object.assign(data, maliciousPayload);
+
+// Checking for admin status
+console.log(data.isAdmin); // Outputs: true
+</code></pre><ol>
+<li>We have an original object data with properties name and age.</li>
+<li>An attacker crafts a malicious payload malicious Payload with <strong>proto</strong> property pointing to an object with an isAdmin property set to true.</li>
+<li>We then use Object.assign() to merge the original object data with the malicious payload. This results in the isAdmin property being added to the data object.</li>
+<li>Now, when we check for the isAdmin property on data, it returns true, even though it wasn&rsquo;t originally part of the object. This demonstrates how the attacker was able to pollute the prototype chain and inject unauthorized properties.</li>
+</ol>
 
       </div>
     </article>
@@ -175,8 +272,9 @@ I uploaded the POC video to Youtube.<br>
     <p>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
 
-        <span class="tag"><a href="https://rootxsudip.github.io/tags/idor/">IDOR</a></span>
+        <span class="tag"><a href="https://rootxsudip.github.io/tags/web-security/">Web Security</a></span>
         <span class="tag"><a href="https://rootxsudip.github.io/tags/bug-bounty/">bug bounty</a></span>
+        <span class="tag"><a href="https://rootxsudip.github.io/tags/ctf/">ctf</a></span>
         
     </p>
 
@@ -190,7 +288,7 @@ I uploaded the POC video to Youtube.<br>
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        110 Words
+        837 Words
       </p>
 
       <p>
@@ -201,7 +299,7 @@ I uploaded the POC video to Youtube.<br>
           <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
         
-          2022-06-05 18:53
+          2024-02-29 10:20
         
 
          
@@ -212,7 +310,7 @@ I uploaded the POC video to Youtube.<br>
       <hr />
       <div class="sharing-buttons">
         
-<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
   <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
     </div>
@@ -220,7 +318,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
   <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
       <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
@@ -229,7 +327,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://www.tumblr.com/widgets/share/tool?posttype=link&amp;title=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;caption=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;canonicalUrl=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on tumblr">
+<a class="resp-sharing-button__link" href="https://www.tumblr.com/widgets/share/tool?posttype=link&amp;title=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;caption=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;canonicalUrl=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on tumblr">
   <div class="resp-sharing-button resp-sharing-button--tumblr resp-sharing-button--small">
     <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.207 2.371h.09c.631-.02 1.486-.205 1.936-.419l1.156 3.425c-.436.636-2.4 1.374-4.156 1.404h-.178l.011.002z"/></svg>
@@ -238,7 +336,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="mailto:?subject=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;body=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_self" rel="noopener" aria-label="" title="Share via email">
+<a class="resp-sharing-button__link" href="mailto:?subject=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;body=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_self" rel="noopener" aria-label="" title="Share via email">
   <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
     </div>
@@ -246,7 +344,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://pinterest.com/pin/create/button/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f&amp;media=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f;description=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202" target="_blank" rel="noopener" aria-label="" title="Share on pinterest">
+<a class="resp-sharing-button__link" href="https://pinterest.com/pin/create/button/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f&amp;media=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f;description=Demystifying%20Prototype%20Pollution%20for%20Beginners" target="_blank" rel="noopener" aria-label="" title="Share on pinterest">
   <div class="resp-sharing-button resp-sharing-button--pinterest resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>
     </div>
@@ -254,7 +352,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f&amp;title=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;summary=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;source=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f&amp;title=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;summary=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;source=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
   <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
     </div>
@@ -262,7 +360,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f&amp;resubmit=true&amp;title=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f&amp;resubmit=true&amp;title=Demystifying%20Prototype%20Pollution%20for%20Beginners" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
   <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
     </div>
@@ -270,7 +368,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://www.xing.com/app/user?op=share;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f;title=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202" target="_blank" rel="noopener" aria-label="" title="Share on xing">
+<a class="resp-sharing-button__link" href="https://www.xing.com/app/user?op=share;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f;title=Demystifying%20Prototype%20Pollution%20for%20Beginners" target="_blank" rel="noopener" aria-label="" title="Share on xing">
   <div class="resp-sharing-button resp-sharing-button--xing resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/></svg>
     </div>
@@ -278,7 +376,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="whatsapp://send?text=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202%20https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on whatsapp">
+<a class="resp-sharing-button__link" href="whatsapp://send?text=Demystifying%20Prototype%20Pollution%20for%20Beginners%20https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on whatsapp">
   <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     </div>
@@ -286,7 +384,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f&amp;t=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202" target="_blank" rel="noopener" aria-label="" title="Share on hacker news">
+<a class="resp-sharing-button__link" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f&amp;t=Demystifying%20Prototype%20Pollution%20for%20Beginners" target="_blank" rel="noopener" aria-label="" title="Share on hacker news">
   <div class="resp-sharing-button resp-sharing-button--hackernews resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M0 24V0h24v24H0zM6.951 5.896l4.112 7.708v5.064h1.583v-4.972l4.148-7.799h-1.749l-2.457 4.875c-.372.745-.688 1.434-.688 1.434s-.297-.708-.651-1.434L8.831 5.896h-1.88z"/></svg>
     </div>
@@ -294,7 +392,7 @@ I uploaded the POC video to Youtube.<br>
 </a>
 
 
-<a class="resp-sharing-button__link" href="https://telegram.me/share/url?text=Hacking%20TryHackMe%20for%20Fun%20and%20Bounties%20%f0%9f%91%80%20Part%202&amp;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fhacking-tryhackme-for-fun-and-bounties-part-2%2f" target="_blank" rel="noopener" aria-label="" title="Share on telegram">
+<a class="resp-sharing-button__link" href="https://telegram.me/share/url?text=Demystifying%20Prototype%20Pollution%20for%20Beginners&amp;url=https%3a%2f%2frootxsudip.github.io%2fposts%2fprototype-pollution-1%2f" target="_blank" rel="noopener" aria-label="" title="Share on telegram">
   <div class="resp-sharing-button resp-sharing-button--telegram resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
     </div>
@@ -314,18 +412,11 @@ I uploaded the POC video to Youtube.<br>
 
         <div class="pagination__buttons">
             
-            <span class="button previous">
-                <a href="https://rootxsudip.github.io/posts/prototype-pollution-1/">
-                    <span class="button__icon">←</span>
-                    <span class="button__text">Demystifying Prototype Pollution for Beginners</span>
-                </a>
-            </span>
-            
 
             
             <span class="button next">
-                <a href="https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-1/">
-                    <span class="button__text">Hacking TryHackMe for Fun and Bounties 👀 Part 1</span>
+                <a href="https://rootxsudip.github.io/posts/hacking-tryhackme-for-fun-and-bounties-part-2/">
+                    <span class="button__text">Hacking TryHackMe for Fun and Bounties 👀 Part 2</span>
                     <span class="button__icon">→</span>
                 </a>
             </span>

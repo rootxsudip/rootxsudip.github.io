@@ -6,8 +6,119 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sun, 05 Jun 2022 18:53:44 +0530</lastBuildDate>
+        <lastBuildDate>Thu, 29 Feb 2024 10:20:22 +0530</lastBuildDate>
         <atom:link href="https://rootxsudip.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Demystifying Prototype Pollution for Beginners</title>
+            <link>https://rootxsudip.github.io/posts/prototype-pollution-1/</link>
+            <pubDate>Thu, 29 Feb 2024 10:20:22 +0530</pubDate>
+            
+            <guid>https://rootxsudip.github.io/posts/prototype-pollution-1/</guid>
+            <description>Before diving into prototype pollution we need to learn about javascript objects and prototype basics.
+What is a javascript object? An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.
+Example code:
+//Object let car = { name: &amp;#34;audi&amp;#34;, model: &amp;#34;r8&amp;#34;, engine: &amp;#34;V10&amp;#34; } //Accessing object properties console.log(car.name) console.log(car.model) Constructor: Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods.</description>
+            <content type="html"><![CDATA[<p>Before diving into prototype pollution we need to learn about javascript objects and prototype basics.</p>
+<h3 id="what-is-a-javascript-object">What is a javascript object?</h3>
+<p>An object in a non-primitive data type which represents a collection of key value pairs. It is to used to store and organize data in a structure manner.</p>
+<p><strong>Example code:</strong></p>
+<pre tabindex="0"><code>//Object
+let car = {
+  name: &#34;audi&#34;,
+  model: &#34;r8&#34;,
+  engine: &#34;V10&#34;
+}
+
+//Accessing object properties
+console.log(car.name)
+console.log(car.model)
+</code></pre><h3 id="constructor">Constructor:</h3>
+<p>Constructor functions are functions used as blueprints for creating multiple instances of objects with similar properties and methods.<br>
+In the below code, we create two instances of car object and the car object act as blueprint.</p>
+<h3 id="prototype">Prototype:</h3>
+<p>In JavaScript, the prototype is a mechanism that allows objects to inherit properties and methods from other objects. Every JavaScript object has a prototype, which is essentially a reference to another object from which it inherits properties. This inheritance mechanism is fundamental to JavaScript&rsquo;s object-oriented programming paradigm.</p>
+<ul>
+<li>In simple language, when we create a object or function the js engine attaches a another object to it which have default properties,methods like toString() etc. That another object which is attach to our object is called prototype or <strong>proto</strong></li>
+</ul>
+<p><strong>Example Code:</strong></p>
+<pre tabindex="0"><code>function Car(name,model,engine){
+  this.name = name,
+  this.model = model,
+  this.engine = engine;
+}
+
+let car1 = new Car(&#34;Lamborghini&#34;,&#34;Revuelto&#34;,&#34;V12&#34;)
+let car2 = new Car(&#34;Nissan&#34;,&#34;Z&#34;,&#34;VR30DDTT&#34;)
+
+//Accessing object
+console.log(car1)
+console.log(car2)
+</code></pre><h4 id="few-key-reasons-why-prototypes-are-used-in-javascript-objects">Few key reasons why prototypes are used in javascript objects</h4>
+<ol>
+<li>Efficiet Memory Usage: When we create multiple instances of one object, each instance gets it&rsquo;s own memory. Prototype allows to define properties and methods once on the prototype object, which is shared among all the instances which reduces memory usage.</li>
+<li>Inheritance: It facilliates inheritance in javascript. When a property or method is accessed on an object, if that property or method does not exist on the object itself, it tries to access the property from prototype chain upto global prototype</li>
+<li>Dynamic Modification:  Prototypes can be modified dynamically at runtime. This means that we can add or modify properties and methods on the prototype of an object, and these changes will be reflected in all instances of that object.</li>
+<li>Performance Optimization: Accessing properties and methods through prototypes can sometimes be faster than accessing them directly on the object itself.</li>
+</ol>
+<p><strong>Example Code:</strong></p>
+<pre tabindex="0"><code>function Car(name,model,engine){
+  this.name = name,
+  this.model = model,
+  this.engine = engine;
+}
+
+//Adding a property in Car prototype
+Car.prototype.category = function(){
+  console.log(&#34;Sports&#34;)
+}
+
+let car1 = new Car(&#34;Lamborghini&#34;,&#34;Revuelto&#34;,&#34;V12&#34;)
+let car2 = new Car(&#34;Nissan&#34;,&#34;Z&#34;,&#34;VR30DDTT&#34;)
+
+//Accessing object properties
+console.log(car1.category())
+console.log(car2.category())
+</code></pre><p>Here, car1 and car2 can access the method from their prototype.</p>
+<h4 id="prototype-chain">Prototype Chain:</h4>
+<p>When a property or method is accessed on an object, JavaScript first looks for it directly on the object itself. If it&rsquo;s not found, JavaScript then follows the prototype chain, traversing through the linked prototype objects until it finds the property or method, or until it reaches the end of the chain (which is typically the Object.prototype).</p>
+<p>Here&rsquo;s a breakdown of how the prototype chain works:</p>
+<ol>
+<li>Object Creation: When an object is created using either object literals, constructor functions, or class syntax, it automatically inherits from a prototype.</li>
+<li>Prototype Linkage: Every object (except for the root Object.prototype) has an internal [[Prototype]] property that references another object. This creates a chain of prototypes.</li>
+<li>Property Lookup: When accessing a property or method on an object, JavaScript first checks if the property exists directly on the object. If not found, it follows the prototype chain, looking for the property or method in each linked prototype object.</li>
+<li>Inheritance: Properties and methods defined in an object&rsquo;s prototype are inherited by all instances of that object. This promotes code reuse and allows for the implementation of inheritance patterns in JavaScript.</li>
+<li>Modifying Prototypes Dynamically: Prototypes can be modified dynamically at runtime, allowing for changes to be reflected in all objects that inherit from them. This provides a powerful way to extend and customize the behavior of objects.</li>
+</ol>
+<h4 id="prototype-pollution">Prototype Pollution:</h4>
+<p>Prototype pollution is a vulnerability in JavaScript where an attacker can manipulate the prototype of objects to inject or modify properties and methods, potentially leading to unexpected behavior or security issues. This can occur when the application fails to properly validate and sanitize user input, allowing attackers to craft malicious payloads.
+Example:</p>
+<pre tabindex="0"><code>// Original object
+let data = {
+  name: &#34;John&#34;,
+  age: 30
+};
+
+// Malicious payload
+let maliciousPayload = {
+  __proto__: {
+    isAdmin: true
+  }
+};
+
+// Merge the original object with the malicious payload
+Object.assign(data, maliciousPayload);
+
+// Checking for admin status
+console.log(data.isAdmin); // Outputs: true
+</code></pre><ol>
+<li>We have an original object data with properties name and age.</li>
+<li>An attacker crafts a malicious payload malicious Payload with <strong>proto</strong> property pointing to an object with an isAdmin property set to true.</li>
+<li>We then use Object.assign() to merge the original object data with the malicious payload. This results in the isAdmin property being added to the data object.</li>
+<li>Now, when we check for the isAdmin property on data, it returns true, even though it wasn&rsquo;t originally part of the object. This demonstrates how the attacker was able to pollute the prototype chain and inject unauthorized properties.</li>
+</ol>
+]]></content>
+        </item>
         
         <item>
             <title>Hacking TryHackMe for Fun and Bounties 👀 Part 2</title>
